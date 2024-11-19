@@ -3,64 +3,25 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model board {
-  num     Int     @id @default(autoincrement())
-  id      String  @db.VarChar(20)
-  writer  String? @db.VarChar(40)
-  title   String? @db.VarChar(80)
-  content String? @db.LongText
-  regtime String? @db.VarChar(40)
+model Note {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  num     Int?
+  writer  String?
+  title   String?
+  // content String?
+  content Json?
+  regtime String?
   hits    Int?
-  type    Int     @default(0)
+  type    Int?    @default(0)
 }
 
-model chatmessage {
-  num     Int     @id @default(autoincrement())
-  roomid  String? @db.VarChar(50)
-  sender  String? @db.VarChar(20)
-  id      String? @db.VarChar(20)
-  content String? @db.Text
-}
-
-model chatting {
-  num     Int     @id @default(autoincrement())
-  roomid  String? @db.VarChar(50)
-  sender  String? @db.VarChar(20)
-  id      String? @db.VarChar(20)
-  content String? @db.Text
-}
-
-model comment {
-  num     Int     @id @default(autoincrement())
-  b_num   Int?
-  writer  String? @db.VarChar(40)
-  id      String? @db.VarChar(40)
-  time    String? @db.VarChar(40)
-  comment String? @db.Text
-
-  @@index([b_num], map: "forg_un_1")
-  @@index([writer], map: "name")
-}
-
-model employment {
-  name    String  @id @db.VarChar(10)
-  company String? @default("-") @db.VarChar(100)
-  status  String  @default("U") @db.VarChar(1)
-}
-
-model file {
-  num      Int    @id
-  savename String @db.Text
-  filename String @db.Text
-}
-
-model member {
-  id    String  @id @db.VarChar(20)
-  pw    String? @db.VarChar(20)
-  name  String? @db.VarChar(20)
-  color String? @db.VarChar(50)
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @unique
+  userPw   String
+  userName String
 }
