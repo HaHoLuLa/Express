@@ -10,13 +10,11 @@ datasource db {
 model Note {
   id      String  @id @default(auto()) @map("_id") @db.ObjectId
   num     Int?
-  writer  String?
-  title   String?
-  // content String?
-  content Json?
-  regtime String?
-  hits    Int?
-  type    Int?    @default(0)
+  writer  String
+  title   String
+  content Json
+  regtime DateTime @default(now())
+  type    Int    @default(0)
 }
 
 model User {
