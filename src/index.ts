@@ -20,7 +20,7 @@ const corsOptions: CorsOptions = {
   credentials: true
 }
 
-app.use(express.json())
+app.use(express.json({ limit: "Infinity" }))
 app.use(cors(corsOptions))
 app.use(session({
   secret: sessionSecret,
