@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Note {
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   num     Int?
   writer  String
   title   String
   content Json
   regtime DateTime @default(now())
-  type    Int    @default(0)
+  type    Int      @default(0)
 }
 
 model User {
@@ -22,4 +22,5 @@ model User {
   userId   String @unique
   userPw   String
   userName String
+  lastView String?
 }

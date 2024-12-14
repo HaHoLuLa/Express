@@ -11,7 +11,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.status(500).json({ message: "비어있음" })
     return
   }
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
       userId,
       userPw
@@ -22,7 +22,8 @@ router.post("/login", async (req: Request, res: Response) => {
   if (user) {
     req.session.user = {
       id: user.userId,
-      name: user.userName
+      name: user.userName,
+      lastView: user.lastView
     }
     res.json({ message: "로그인 성공" })
   } else {
@@ -72,6 +73,25 @@ router.get("/profile", (req: Request, res: Response) => {
     res.json({ user: req.session.user })
   } else {
     res.status(401).json({ message: "로그인 필요" })
+  }
+})
+
+router.post("/view", async (req: Request, res: Response) => {
+  const { id, lastView } = req.body
+  console.log(req.body)
+  try {
+    await prisma.user.update({
+      where: {
+        userId: id
+      },
+      data: {
+        lastView
+      }
+    })
+    console.log("업데이트 성공")
+    res.json({ message: "성공" })
+  } catch (e) {
+    res.status(500).json({ e })
   }
 })
 
